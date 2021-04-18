@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAppWhiteBg">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/app_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/app_margin" />
+
+    <TextView
+        android:id="@+id/tv_otp_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline2"
+        app:layout_constraintRight_toRightOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/enter_otp"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_otp_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline2"
+        app:layout_constraintRight_toRightOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_otp_title"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="@string/sent_otp_on"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_12sp"/>
+
+    <include
+        android:id="@+id/lay_mobile_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        layout="@layout/layout_common_data_entry"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline2"
+        app:layout_constraintRight_toRightOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_otp_desc"
+        android:layout_marginTop="@dimen/dimen_40dp"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/otp_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="tv_resend_otp_counter,tv_resend_otp"/>
+
+    <TextView
+        android:id="@+id/tv_resend_otp_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="@+id/guideline3"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_didnot_get_otp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:textColor="@color/colorHintlabelText"
+        android:textSize="@dimen/text_size_12sp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_resend_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="@+id/guideline3"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_didnot_get_otp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="@string/resend"
+        android:textColor="@color/colorEnabled"
+        android:textSize="@dimen/text_size_12sp"/>
+
+    <TextView
+        android:id="@+id/tv_didnot_get_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/otp_barrier"
+        app:layout_constraintTop_toBottomOf="@+id/lay_mobile_no"
+        android:layout_marginRight="@dimen/dimen_5dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="@string/didnot_get_otp"
+        android:textColor="@color/colorBorderTitle"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <TextView
+        android:id="@+id/tv_divider"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:background="@color/colorBorderTitle"/>
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/ButtonStyle"
+        app:layout_constraintLeft_toLeftOf="@id/guideline2"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:enabled="false"
+        android:text="@string/submit_proceed_next"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

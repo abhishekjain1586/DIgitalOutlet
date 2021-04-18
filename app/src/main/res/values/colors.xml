@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#F2F2F2</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorBorderOutline">#F2F2F2</color>
+    <color name="colorBorderTitle">#1A000000</color>
+    <color name="colorAppWhiteBg">#FFFFFF</color>
+    <color name="colorAppBlack">#212121</color>
+    <color name="colorEnabled">#2D84EA</color>
+    <color name="colorSelectedDisabled">#802D84EA</color>
+    <color name="colorHintEditText">#1A000000</color>
+    <color name="colorHintlabelText">#80000000</color>
+    <color name="colorRadioUnselected">#4D000000</color>
+    <color name="colorCategorySelection">#80000000</color>
+    <color name="colorProfileItem">#E5E5E5</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+</resources>
+
+
+<!-- Opacity
+100% — FF
+95% — F2
+90% — E6
+85% — D9
+80% — CC
+75% — BF
+70% — B3
+65% — A6
+60% — 99
+55% — 8C
+50% — 80
+45% — 73
+40% — 66
+35% — 59
+30% — 4D
+25% — 40
+20% — 33
+15% — 26
+10% — 1A
+5% — 0D
+0% — 00
+-->

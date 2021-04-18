@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="price_length">7</integer>
+    <integer name="otp_length">5</integer>
+    <integer name="name_length">100</integer>
+    <integer name="pincode_length">6</integer>
+</resources>

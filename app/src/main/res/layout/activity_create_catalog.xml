@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activities.OTPActivity"
+    android:background="@color/colorAppWhiteBg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAppWhiteBg">
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/app_margin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/app_margin"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline1"
+        app:layout_constraintRight_toRightOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/appbar"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_12sp"/>
+
+    <TextView
+        android:id="@+id/tv_choose_product_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline1"
+        app:layout_constraintRight_toRightOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:text="@string/choose_category_title"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_16sp" />
+    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_parent_category"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_choose_product_title"
+        app:layout_constraintBottom_toTopOf="@+id/tv_divider"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+    <TextView
+        android:id="@+id/tv_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_skip"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:background="@color/colorBorderTitle"/>
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/ButtonStyleWhiteBg"
+        app:layout_constraintLeft_toLeftOf="@id/guideline1"
+        app:layout_constraintRight_toLeftOf="@id/btn_confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_weight="1"
+        android:layout_marginRight="@dimen/dimen_5dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:text="@string/skip_for_now" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/ButtonStyle"
+        app:layout_constraintRight_toRightOf="@id/guideline2"
+        app:layout_constraintLeft_toRightOf="@id/btn_skip"
+        app:layout_constraintBaseline_toBaselineOf="@id/btn_skip"
+        app:layout_constraintHorizontal_weight="1"
+        android:layout_marginLeft="@dimen/dimen_5dp"
+        android:text="@string/confirm"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

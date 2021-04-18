@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/app_margin"
+            android:paddingBottom="@dimen/app_margin"
+            android:paddingRight="@dimen/app_margin"
+            android:paddingLeft="@dimen/dimen_22dp">
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cross"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@id/tv_tos_title"
+                android:layout_alignBottom="@id/tv_tos_title"/>
+
+            <TextView
+                android:id="@+id/tv_tos_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_close"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:text="@string/select_type_of_business"
+                android:textColor="@color/colorAppBlack"
+                android:textSize="@dimen/text_size_16sp"
+                android:layout_marginLeft="@dimen/dimen_22dp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorBorderTitle"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tob"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen_10dp"/>
+    </LinearLayout>
+</LinearLayout>

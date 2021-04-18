@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lay_item_product"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/app_margin"
+    android:paddingRight="@dimen/app_margin"
+    android:paddingBottom="@dimen/dimen_20dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"/>
+
+    <TextView
+        android:id="@+id/tv_brand_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:text="DAWAT"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_9sp" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_brand_name"
+        app:layout_constraintRight_toLeftOf="@+id/guideline1"
+        android:layout_marginTop="@dimen/dimen_3dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:text="Basmati Rice - 1 Kg"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_14sp" />
+
+    <TextView
+        android:id="@+id/tv_product_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/tv_product_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_product_name"
+        app:layout_constraintLeft_toRightOf="@+id/guideline1"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:gravity="right"
+        android:hint="1,000"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <TextView
+        android:id="@+id/tv_divider"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_name"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@color/colorBorderTitle"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

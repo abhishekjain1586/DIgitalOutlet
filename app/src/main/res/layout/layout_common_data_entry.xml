@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/edt_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/EntryFields"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/enter_your_10_digit_mobile_no"
+        android:textColorHint="@color/colorHintEditText"
+        android:inputType="number"
+        android:maxLength="10"
+        android:textSize="@dimen/text_size_16sp"
+        android:textColor="@color/colorAppBlack"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:paddingLeft="@dimen/dimen_3dp"
+        android:paddingRight="@dimen/dimen_3dp"
+        android:background="@color/colorAppWhiteBg"
+        android:textColor="@color/colorHintlabelText"
+        android:text="@string/mobile_no"
+        android:textSize="@dimen/text_size_12sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

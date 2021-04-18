@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lay_item_product"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/app_margin"
+    android:paddingRight="@dimen/app_margin"
+    android:paddingBottom="25dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="@dimen/item_image_dimen_75dp"
+        android:layout_height="@dimen/item_image_dimen_75dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_product_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardBackgroundColor="@android:color/transparent"
+        android:background="@drawable/bg_border_entry_fields"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/iv_product_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/card_view"
+        app:layout_constraintRight_toLeftOf="@+id/iv_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:constraint_referenced_ids="tv_brand_name,tv_product_name,tv_product_price"/>
+
+    <TextView
+        android:id="@+id/tv_brand_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/group"
+        app:layout_constraintLeft_toLeftOf="@+id/group"
+        app:layout_constraintRight_toRightOf="@+id/group"
+        app:layout_constraintBottom_toTopOf="@+id/tv_product_name"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:text="DAWAT"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_9sp" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_brand_name"
+        app:layout_constraintRight_toRightOf="@+id/group"
+        app:layout_constraintTop_toBottomOf="@+id/tv_brand_name"
+        app:layout_constraintBottom_toTopOf="@+id/tv_product_price"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:text="Basmati Rice - 1 Kg"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_14sp" />
+
+    <TextView
+        android:id="@+id/tv_product_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_brand_name"
+        app:layout_constraintRight_toRightOf="@+id/group"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+        app:layout_constraintBottom_toBottomOf="@+id/group"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="Rs 1,000"
+        android:textColor="@color/colorHintlabelText"
+        android:textSize="@dimen/text_size_11sp" />
+
+    <ImageView
+        android:id="@+id/iv_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/tv_brand_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_product_name"
+        app:layout_constraintRight_toLeftOf="@+id/iv_delete"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:padding="@dimen/dimen_10dp"
+        android:src="@drawable/ic_edit" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/tv_brand_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_product_name"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="@dimen/dimen_10dp"
+        android:src="@drawable/ic_delete" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">Digital Outlet</string>
+    <string name="maps_api_key">AIzaSyBJxe9IHuG9LZCAil7LOPReB_1VWyDEsSI</string>
+
+    <!-- Dialog -->
+    <string name="ok">OK</string>
+    <string name="ok_">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+    <!-- Common -->
+    <string name="Rs">\u20B9</string>
+    <string name="not_available">N/A</string>
+
+
+    <!-- Common Errors -->
+    <string name="error_internal_server_error">Internal Server Error</string>
+    <string name="error_oops_something_not_right">Oops Something is not right</string>
+    <string name="error_no_internet_connection">No Internet Connection</string>
+    <string name="error_no_record_found">No Record Found</string>
+    <string name="error_no_products_to_publish">No Products to Publish</string>
+
+
+    <!-- Preferences keys -->
+    <string name="pref_merchant_file">pref_merchant_file</string>
+    <string name="pref_update_merchant_menu">pref_update_merchant_menu</string>
+    <string name="pref_merchant_merchant_id">pref_merchant_merchant_id</string>
+    <string name="pref_merchant_tos_id">pref_merchant_tos_id</string>
+    <string name="pref_merchant_merchant_name">pref_merchant_merchant_name</string>
+    <string name="pref_merchant_msisdn">pref_merchant_msisdn</string>
+
+
+    <!-- launcher screen -->
+    <string name="login">Login</string>
+    <string name="dont_have_account">Don\'t Have Account?</string>
+    <string name="sign_up">Sign up</string>
+
+
+    <!-- OTP screen -->
+    <string name="error_start_consentsms_failed">Failed to Initiate Message</string>
+    <string name="error_empty_sms">SMS received with empty content</string>
+    <string name="error_on_sms_timeout">Timeout Error. \nSMS could not be delivered</string>
+    <string name="error_enter_valid_10_digit_mobile_no">Enter valid 10 Digit Mobile No.</string>
+
+    <string name="login_to_digital_world">Log in to Digital World</string>
+    <string name="your_online_to_offline_experience">Your Online to Offline Experience</string>
+    <string name="generate_otp">Generate OTP</string>
+    <string name="mobile_no">Mobile No</string>
+    <string name="enter_your_10_digit_mobile_no">Enter your 10 Digit Mobile No.</string>
+    <string name="signup_to_digital_world">Sign up to Digital World</string>
+    <string name="sms_sent_sucessfully">SMS sent successfully</string>
+
+    <string name="submit_proceed_next">Submit and Proceed Next</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="sent_otp_on">We have sent an OTP on</string>
+    <string name="enter_wrong_no">Enter wrong number?</string>
+    <string name="edit_number">Edit Number</string>
+    <string name="otp">OTP</string>
+    <string name="didnot_get_otp">Didn\'t Get OTP?</string>
+    <string name="resend">Resend</string>
+    <string name="resend_in">Resend in</string>
+
+    <string name="merchant_already_registered">Merchant Already Registered. Do you want to continue with Login process?</string>
+    <string name="merchant_not_registered">Merchant not Registered. Do you want to continue with Signup process?</string>
+
+
+    <!-- Signup screen -->
+    <string name="signup">Signup</string>
+    <string name="full_name">Full Name</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="shop_number">Shop Number</string>
+    <string name="business_type">Business Type</string>
+    <string name="others">Others</string>
+    <string name="business_type_others">Others</string>
+    <string name="shop_address">Shop Address</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="signup_full_name_hint">E.g. Abc</string>
+    <string name="signup_shop_name_hint">E.g. Zmart</string>
+    <string name="signup_shop_number_hint">E.g. J2-991</string>
+    <string name="signup_business_type_hint">E.g. Grocery</string>
+    <string name="signup_business_type_others_hint">E.g. Others</string>
+    <string name="signup_shop_address_hint">Enter your Shop Address</string>
+    <string name="signup_pin_code_hint">E.g. 122015</string>
+    <string name="signup_city_hint">E.g. Mumbai</string>
+    <string name="signup_state_hint">E.g. Maharashtra</string>
+    <string name="submit">Submit</string>
+    <string name="select_type_of_business">Select Type of Business</string>
+    <string name="error_invalid_msisdn">Mobile Number not available</string>
+    <string name="error_invalid_full_name">Enter valid Full Name</string>
+    <string name="error_invalid_shop_name">Enter valid Shop Name</string>
+    <string name="error_invalid_business_type">Enter valid Business Type</string>
+    <string name="error_invalid_shop_no">Enter valid Shop No</string>
+    <string name="error_invalid_shop_address">Enter valid Shop Address</string>
+    <string name="error_invalid_pin_code">Enter valid Pincode</string>
+    <string name="error_invalid_city">Enter valid City</string>
+    <string name="error_invalid_state">Enter valid State</string>
+    <string name="error_location_not_fetched">Unable to fetch Location</string>
+    <string name="error_merchant_not_created">Unable to create Merchant</string>
+    <string name="select_shop_location">Select Shop Location</string>
+    <string name="registration_successful_title">Registered Successfully</string>
+    <string name="registration_successful_message">Your Merchant id: %1$s</string>
+
+
+    <!-- Select Catagory Screen -->
+    <string name="create_digital_menu_screen_title">Create Digital Menu</string>
+    <string name="confirm">Confirm</string>
+    <string name="skip_for_now">Skip for Now</string>
+    <string name="choose_category_title">Choose Product Categories to create your Digital Menu</string>
+    <string name="hello">Hello</string>
+    <string name="select_product_categories">Please select atleast One Product Category to proceed further</string>
+
+
+    <!-- Select Products Screen -->
+    <string name="choose_products_title">Choose products for selected category</string>
+    <string name="popular_products_title">Popular Products</string>
+    <string name="didnot_find_desired_product">Didn\'t find desired product?</string>
+    <string name="add_manually">Add Manually</string>
+    <string name="save_as_draft">Save as Draft</string>
+    <string name="proceed_to_next">Proceed to Next</string>
+    <string name="error_no_products_selected">No Products selected. Do you want to proceed with Next Category?</string>
+    <string name="error_no_products_selected_to_proceed_further">Please select required Products to proceed further</string>
+    <string name="menu_search">Search</string>
+    <string name="hint_search_product">Search Product</string>
+
+
+    <!-- Products Price Screen -->
+    <string name="enter_price_optional">Enter price for selected Product (Optional)</string>
+    <string name="next_category">Next Category</string>
+    <string name="review">Review</string>
+
+
+    <!-- Products Summary Screen -->
+    <string name="rates">Rates</string>
+    <string name="publish">Publish</string>
+    <string name="summary">Summary</string>
+
+
+    <!-- Dashboard Screen -->
+    <string name="digiworld">DigiWorld</string>
+    <string name="remind_me_later">Remind me later</string>
+    <string name="draft_msg">You have %1$d products in your draft. Do you want to view and publish?</string>
+    <string name="what_do_want_to_add">What do you want to add</string>
+    <string name="category">Category</string>
+    <string name="products">Product(s)</string>
+    <string name="confirm_delete_product">Are you sure you want to delete the Product\n\"%1$s\"</string>
+    <string name="error_fetching_products_on_msisdn">Error fetching records</string>
+    <string name="title_share_via">Share via</string>
+    <string name="title_share_via_whatsapp">WhatsApp</string>
+    <string name="title_share_via_email">Email</string>
+    <string name="title_share_via_sms">SMS</string>
+    <string name="error_whatsapp_not_installed">WhatsApp have not been installed.</string>
+    <string name="title_choose_app">Choose an app</string>
+    <string name="title_digital_menu">Digital Menu</string>
+
+
+    <!-- Profile Screen -->
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="raise_request">Raise a Request</string>
+    <string name="my_request">My Request(s)</string>
+    <string name="logout">Logout</string>
+    <string name="product_history">Product History</string>
+    <string name="delete_my_account">Delect My Account</string>
+</resources>
