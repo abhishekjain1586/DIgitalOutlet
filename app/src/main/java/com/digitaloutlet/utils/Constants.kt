@@ -18,6 +18,7 @@ object Constants {
     const val INTENT_SELECTED_PRODUCT = "selected_products"
     const val INTENT_PARENT_CATEGORY_ID = "parent_category_id"
     const val INTENT_PRODUCT_ID = "product_id"
+    const val INTENT_PRODUCT_SELECTION_STATE = "product_selection_state"
 
 
     // Product Entity Constants

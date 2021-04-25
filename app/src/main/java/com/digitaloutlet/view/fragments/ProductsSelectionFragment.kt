@@ -19,6 +19,7 @@ import com.digitaloutlet.view.activities.SummaryActivity
 import com.digitaloutlet.view.base.BaseActivity
 import com.digitaloutlet.view.base.BaseFragment
 import com.digitaloutlet.viewholder.OnItemClickListener
+import com.digitaloutlet.viewmodel.ProductsActivityViewModel
 import com.digitaloutlet.viewmodel.ProductsFragmentViewModel
 
 class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
@@ -29,6 +30,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
     private lateinit var mBtnProceedToNext: Button
 
     private lateinit var mViewModel: ProductsFragmentViewModel
+    private lateinit var mActivityViewModel: ProductsActivityViewModel
     private lateinit var linearLayoutManager : LinearLayoutManager
     private var mAdapter: ProductsAdapter? = null
 
@@ -73,6 +75,9 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
 
     override fun initViews() {
         mViewModel = ViewModelProviders.of(this).get(ProductsFragmentViewModel::class.java)
+        mActivityViewModel = ViewModelProviders.of(requireActivity()).get(ProductsActivityViewModel::class.java)
+        (requireActivity() as ProductsActivity).supportActionBar?.title = mActivityViewModel.getCurrentCategory()?.parent_cat
+        mViewModel.setCurrentCat(mActivityViewModel.getCurrentCategory())
 
         mRvProducts = baseView.findViewById(R.id.rv_parent_category)
         mBtnSaveAsDraft = baseView.findViewById(R.id.btn_save_as_draft)
@@ -89,7 +94,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
     }
 
     override fun initData() {
-        mViewModel.setCurrentParentCategory((requireContext() as ProductsActivity).getCurrentParentCategory())
+        //mViewModel.setCurrentParentCategory((requireContext() as ProductsActivity).getCurrentParentCategory())
         mViewModel.showLoader().observe(viewLifecycleOwner, object : Observer<Boolean> {
             override fun onChanged(value: Boolean) {
                 if (value) {
@@ -106,13 +111,17 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
             }
         })
 
-        mViewModel.getProductsObserver(0).observe(viewLifecycleOwner, object : Observer<ArrayList<ProductsEntity>> {
-            override fun onChanged(productsLst: ArrayList<ProductsEntity>) {
+        mViewModel.observerGetProducts(mActivityViewModel.getCurrentCategory()?.id!!).observe(viewLifecycleOwner, object : Observer<ArrayList<ProductsEntity>> {
+            override fun onChanged(productsLst: ArrayList<ProductsEntity>?) {
+                if (productsLst == null) {
+                    DialogUtil.showCommonActionDialog(requireContext(), Constants.EMPTY, getString(R.string.error_no_record_found), false, null)
+                    return
+                }
                 initAdapter(productsLst)
             }
         })
 
-        mViewModel.changeProductStateObserver().observe(viewLifecycleOwner, object : Observer<Map<Int, ProductsEntity>> {
+        mViewModel.observerChangeProductState().observe(viewLifecycleOwner, object : Observer<Map<Int, ProductsEntity>> {
             override fun onChanged(productObjMap: Map<Int,ProductsEntity>) {
                 for (key in productObjMap.keys) {
                     mAdapter?.notifyItemChanged(key, productObjMap.get(key))
@@ -121,7 +130,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
             }
         })
 
-        mViewModel.saveAsDraftObserver().observe(viewLifecycleOwner, object :
+        mViewModel.observerSaveAsDraft().observe(viewLifecycleOwner, object :
             Observer<Boolean> {
             override fun onChanged(saveAsDraft: Boolean) {
                 if (saveAsDraft) {
@@ -158,11 +167,11 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
     override fun onClick(view: View?) {
         when(view?.id) {
             R.id.btn_save_as_draft -> {
-                mViewModel.saveProductsInDB(true)
+                mViewModel.saveProductsInDB(mActivityViewModel.getCurrentCategory()?.parent_cat)
             }
 
             R.id.btn_proceed_next -> {
-                mViewModel.saveProductsInDB(false)
+                mViewModel.saveProductsInDB(mActivityViewModel.getCurrentCategory()?.parent_cat, false)
             }
         }
     }
@@ -172,7 +181,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun confirmUser() {
-        val isNextCatAvailable = (requireActivity() as ProductsActivity).hasNextCategory()
+        val isNextCatAvailable = mActivityViewModel.hasNextCategory()
         var errorMsg = resources.getString(R.string.error_no_products_selected_to_proceed_further)
         if (isNextCatAvailable) {
             errorMsg = resources.getString(R.string.error_no_products_selected)
@@ -184,6 +193,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
             , true, object : DialogUtil.DailogCallback {
                 override fun onEventOK() {
                     if (isNextCatAvailable) {
+                        mActivityViewModel.updateCurrentCategory()
                         selectNextCategory()
                     } else {
                         launchSummaryScreen()
@@ -214,7 +224,6 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun selectNextCategory() {
-        (requireContext() as ProductsActivity).incrementParentCatPosition()
         (requireContext() as ProductsActivity).clearAllFragmentsInclusive(ProductsSelectionFragment::class.simpleName)
         (requireContext() as ProductsActivity).addFragment(ProductsSelectionFragment(), null)
     }

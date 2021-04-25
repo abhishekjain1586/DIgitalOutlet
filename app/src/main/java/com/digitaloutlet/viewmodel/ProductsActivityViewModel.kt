@@ -7,18 +7,19 @@ import com.digitaloutlet.db.entities.ProductsEntity
 import com.digitaloutlet.model.response.ParentCategory
 import com.digitaloutlet.model.response.ResProducts
 import com.digitaloutlet.repository.ProductsRepository
-import com.digitaloutlet.utils.Constants
+import com.digitaloutlet.view.enums.ProductSelectionState
 
 class ProductsActivityViewModel : ViewModel(), ProductsRepository.OnProductsListener {
 
     private var loader: SingleLiveEvent<Boolean>? = null
     private var errorDialog: SingleLiveEvent<String>? = null
-    private var mLiveDataParentCategoryName: SingleLiveEvent<String>? = null
+    //private var mLiveDataParentCategoryName: SingleLiveEvent<String>? = null
     private var mLiveDataProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
 
     private var mProductsLst = ArrayList<ProductsEntity>()
-    private var mSelectedParentCatLst = ArrayList<ParentCategory>()
+    private var mCategoryLst = ArrayList<ParentCategory>()
     private var currentParentCatPosition = 0
+    private lateinit var mProductSelectionState: ProductSelectionState
 
 
     // Live Data Initialization
@@ -38,18 +39,41 @@ class ProductsActivityViewModel : ViewModel(), ProductsRepository.OnProductsList
         return errorDialog!!
     }
 
-    fun setSelectedParentCatLst(selectedParentCatLst: ArrayList<ParentCategory>) {
-        mSelectedParentCatLst.clear()
-        mSelectedParentCatLst.addAll(selectedParentCatLst)
-
-        mLiveDataParentCategoryName?.value = getCurrentParentCat()?.parent_cat ?: Constants.EMPTY
+    fun setProductSelectionState(state: ProductSelectionState) {
+        mProductSelectionState = state
     }
 
-    fun getCurrentParentCat(): ParentCategory? {
-        if (mSelectedParentCatLst.isNotEmpty()) {
-            return mSelectedParentCatLst.get(currentParentCatPosition)
+    fun getProductSelectionState(): ProductSelectionState {
+        return mProductSelectionState
+    }
+
+    fun setCategoryLst(selectedParentCatLst: ArrayList<ParentCategory>) {
+        mCategoryLst.clear()
+        mCategoryLst.addAll(selectedParentCatLst)
+
+        //mLiveDataParentCategoryName?.value = getCurrentParentCat()?.parent_cat ?: Constants.EMPTY
+    }
+
+    fun getCurrentCategory(): ParentCategory? {
+        if (mCategoryLst.isNotEmpty()) {
+            return mCategoryLst.get(currentParentCatPosition)
         }
         return null
+    }
+
+    fun updateCurrentCategory() {
+        incrementParentCatPosition()
+    }
+
+    fun hasNextCategory(): Boolean {
+        if (currentParentCatPosition < mCategoryLst.size - 1) {
+            return true
+        }
+        return false
+    }
+
+    private fun incrementParentCatPosition() {
+        currentParentCatPosition++
     }
 
     override fun onSuccessProducts(response: ResProducts) {

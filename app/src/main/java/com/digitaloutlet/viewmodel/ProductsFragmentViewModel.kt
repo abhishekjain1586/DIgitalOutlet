@@ -1,8 +1,6 @@
 package com.digitaloutlet.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.digitaloutlet.R
-import com.digitaloutlet.application.DOApplication
 import com.digitaloutlet.db.entities.ProductsEntity
 import com.digitaloutlet.model.response.ParentCategory
 import com.digitaloutlet.model.response.ResProducts
@@ -12,16 +10,17 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
 
     private var loader: SingleLiveEvent<Boolean>? = null
     private var errorDialog: SingleLiveEvent<String>? = null
-    private var mLiveDataProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
-    private var mLiveDataProductChangeState: SingleLiveEvent<HashMap<Int, ProductsEntity>>? = null
+    private var mLvdProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
+    private var mLvdProductChangeState: SingleLiveEvent<HashMap<Int, ProductsEntity>>? = null
     private var mLiveDataProceedNextToCapturePrice: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
     private var mLiveDataUserConsentToProceed: SingleLiveEvent<Boolean>? = null
-    private var mLiveDataSaveAsDraft: SingleLiveEvent<Boolean>? = null
+    private var mLvdSaveAsDraft: SingleLiveEvent<Boolean>? = null
 
-    private var mProductsRepository: ProductsRepository? = null
+    private var mProductsRepository = ProductsRepository()
 
     private var mProductsLst = ArrayList<ProductsEntity>()
-    var mCurrentParentCat: ParentCategory? = null
+    private var mCurrentCategory: ParentCategory? = null
+    //var mCurrentParentCat: ParentCategory? = null
 
 
     // Live Data Initialization
@@ -39,33 +38,27 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         return errorDialog!!
     }
 
-    fun getProductsObserver(subCatId: Int): SingleLiveEvent<java.util.ArrayList<ProductsEntity>> {
-        if (mLiveDataProducts == null) {
-            mLiveDataProducts = SingleLiveEvent()
-        }
-
-        if (mProductsRepository == null) {
-            mProductsRepository = ProductsRepository()
-            mProductsRepository?.setListener(this)
+    fun observerGetProducts(catId: Int): SingleLiveEvent<java.util.ArrayList<ProductsEntity>> {
+        if (mLvdProducts == null) {
+            mLvdProducts = SingleLiveEvent()
         }
 
         if (!mProductsLst.isNullOrEmpty()) {
-            mLiveDataProducts?.value = mProductsLst
+            mLvdProducts?.value = mProductsLst
         } else {
-            mCurrentParentCat?.id?.let {
-                loader?.value = true
-                mProductsRepository?.getProductDetails(it)
-            }
+            loader?.value = true
+            mProductsRepository.setListener(this)
+            mProductsRepository.getProductDetails(catId)
         }
 
-        return mLiveDataProducts!!
+        return mLvdProducts!!
     }
 
-    fun changeProductStateObserver(): SingleLiveEvent<HashMap<Int, ProductsEntity>> {
-        if (mLiveDataProductChangeState == null) {
-            mLiveDataProductChangeState = SingleLiveEvent()
+    fun observerChangeProductState(): SingleLiveEvent<HashMap<Int, ProductsEntity>> {
+        if (mLvdProductChangeState == null) {
+            mLvdProductChangeState = SingleLiveEvent()
         }
-        return mLiveDataProductChangeState!!
+        return mLvdProductChangeState!!
     }
 
     fun proceedNextToCapturePriceObserver(): SingleLiveEvent<ArrayList<ProductsEntity>> {
@@ -86,18 +79,18 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         return mLiveDataUserConsentToProceed!!
     }
 
-    fun saveAsDraftObserver(): SingleLiveEvent<Boolean> {
-        if (mLiveDataSaveAsDraft == null) {
-            mLiveDataSaveAsDraft = SingleLiveEvent()
+    fun observerSaveAsDraft(): SingleLiveEvent<Boolean> {
+        if (mLvdSaveAsDraft == null) {
+            mLvdSaveAsDraft = SingleLiveEvent()
         }
-        return mLiveDataSaveAsDraft!!
+        return mLvdSaveAsDraft!!
+    }
+
+    fun setCurrentCat(cat: ParentCategory?) {
+        mCurrentCategory = cat
     }
     // End of Live Data Initialization
 
-
-    fun setCurrentParentCategory(parentCat: ParentCategory) {
-        mCurrentParentCat = parentCat
-    }
 
     fun onProductChangeState(position: Int, productsEntity: ProductsEntity) {
         val obj = mProductsLst.get(position)
@@ -105,7 +98,7 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
 
         val tempMap = HashMap<Int, ProductsEntity>()
         tempMap.put(position, obj)
-        mLiveDataProductChangeState?.value = tempMap
+        mLvdProductChangeState?.value = tempMap
     }
 
     private fun getProductsToSave(): ArrayList<ProductsEntity> {
@@ -123,7 +116,7 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         val tempLst = ArrayList<ProductsEntity>()
         val mapSubCat = HashMap<Int, ProductsEntity>()
 
-        val selectedLst = mProductsRepository?.getProductsByParentCatId(mCurrentParentCat?.id!!)
+        val selectedLst = mProductsRepository.getProductsByParentCatId(mCurrentCategory?.id!!)
         if (!selectedLst.isNullOrEmpty()) {
             val mapSavedLst = HashMap<Int, ProductsEntity>()
             for (i in 0 until selectedLst.size) {
@@ -165,10 +158,10 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         return subcatWiseLst
     }
 
-    fun saveProductsInDB(isSaveAsDraft: Boolean) {
-        val selectedProductLst = mProductsRepository?.saveProductsInDB(getProductsToSave(), mCurrentParentCat?.parent_cat)
+    fun saveProductsInDB(parentCatName: String?, isSaveAsDraft: Boolean = true) {
+        val selectedProductLst = mProductsRepository.saveProductsInDB(getProductsToSave(), parentCatName)
         if (isSaveAsDraft) {
-            mLiveDataSaveAsDraft?.value = true
+            mLvdSaveAsDraft?.value = true
         } else {
             if (!selectedProductLst.isNullOrEmpty()) {
                 mLiveDataProceedNextToCapturePrice?.value = selectedProductLst
@@ -184,9 +177,9 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
             if (!response.records.isNullOrEmpty()) {
                 mProductsLst.clear()
                 mProductsLst.addAll(getSubcategoryWiseLst(response.records!!))
-                mLiveDataProducts?.value = mProductsLst
+                mLvdProducts?.value = mProductsLst
             } else {
-                errorDialog?.value = DOApplication._INSTANCE.resources.getString(R.string.error_no_record_found)
+                mLvdProducts?.value = null
             }
         } else {
             errorDialog?.value = response.message

@@ -22,6 +22,7 @@ import com.digitaloutlet.view.activities.SummaryActivity
 import com.digitaloutlet.view.base.BaseActivity
 import com.digitaloutlet.view.base.BaseFragment
 import com.digitaloutlet.viewholder.OnItemClickListener
+import com.digitaloutlet.viewmodel.ProductsActivityViewModel
 import com.digitaloutlet.viewmodel.ProductsPriceFragmentViewModel
 
 class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
@@ -32,6 +33,7 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
     private lateinit var mBtnNextCategory: Button
 
     private lateinit var mViewModel: ProductsPriceFragmentViewModel
+    private lateinit var mActivityViewModel: ProductsActivityViewModel
     private lateinit var linearLayoutManager : LinearLayoutManager
     private var mAdapter: ProductsPriceAdapter? = null
     private var editProductID: Int? = null
@@ -61,6 +63,8 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
 
     override fun initViews() {
         mViewModel = ViewModelProviders.of(this).get(ProductsPriceFragmentViewModel::class.java)
+        mActivityViewModel = ViewModelProviders.of(requireActivity()).get(ProductsActivityViewModel::class.java)
+        (requireActivity() as ProductsActivity).supportActionBar?.title = mActivityViewModel.getCurrentCategory()?.parent_cat
 
         mRvProducts = baseView.findViewById(R.id.rv_product_price)
         mBtnSaveAsDraft = baseView.findViewById(R.id.btn_save_as_draft)
@@ -79,7 +83,7 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
     override fun initData() {
         var parentCatID: String? = null
 
-        mViewModel.setCurrentParentCategory((requireContext() as ProductsActivity).getCurrentParentCategory())
+        //mViewModel.setCurrentParentCategory((requireContext() as ProductsActivity).getCurrentParentCategory())
 
         /*var productsLst = ArrayList<ProductsEntity>()
         if (!(activity as ProductsActivity).isEditPublishedProduct) {
@@ -141,7 +145,7 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
         }
 
         var strNextLabel = requireContext().getString(R.string.next_category)
-        if (!(requireContext() as ProductsActivity).hasNextCategory()) {
+        if (!mActivityViewModel.hasNextCategory()) {
             strNextLabel = requireContext().getString(R.string.review)
         }
         mBtnNextCategory.text = strNextLabel
@@ -175,7 +179,8 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun proceedNext() {
-        if ((requireActivity() as ProductsActivity).hasNextCategory()) {
+        if (mActivityViewModel.hasNextCategory()) {
+            mActivityViewModel.updateCurrentCategory()
             launchProductsScreen()
         } else {
             //mViewModel.checkProductsToPublish()
@@ -184,7 +189,6 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun launchProductsScreen() {
-        (requireContext() as ProductsActivity).incrementParentCatPosition()
         (requireContext() as ProductsActivity).clearAllFragmentsInclusive(ProductsPriceFragment::class.simpleName)
         if ((requireContext() as ProductsActivity).isEditPublishedProduct) {
             (requireContext() as ProductsActivity).addFragment(ProductsPriceFragment(), null)
