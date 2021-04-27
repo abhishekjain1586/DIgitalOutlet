@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.digitaloutlet.R
 import com.digitaloutlet.adapter.ProductsPriceAdapter
-import com.digitaloutlet.application.DOApplication
 import com.digitaloutlet.db.entities.ProductsEntity
 import com.digitaloutlet.utils.Constants
 import com.digitaloutlet.utils.DialogUtil
@@ -21,6 +20,7 @@ import com.digitaloutlet.view.activities.ProductsActivity
 import com.digitaloutlet.view.activities.SummaryActivity
 import com.digitaloutlet.view.base.BaseActivity
 import com.digitaloutlet.view.base.BaseFragment
+import com.digitaloutlet.view.enums.ProductSelectionState
 import com.digitaloutlet.viewholder.OnItemClickListener
 import com.digitaloutlet.viewmodel.ProductsActivityViewModel
 import com.digitaloutlet.viewmodel.ProductsPriceFragmentViewModel
@@ -36,16 +36,6 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
     private lateinit var mActivityViewModel: ProductsActivityViewModel
     private lateinit var linearLayoutManager : LinearLayoutManager
     private var mAdapter: ProductsPriceAdapter? = null
-    private var editProductID: Int? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            if (it.containsKey(Constants.INTENT_PRODUCT_ID)) {
-                editProductID = it.getInt(Constants.INTENT_PRODUCT_ID)
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,25 +68,10 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
     override fun initListeners() {
         mBtnSaveAsDraft.setOnClickListener(this)
         mBtnNextCategory.setOnClickListener(this)
+        initObservers()
     }
 
-    override fun initData() {
-        var parentCatID: String? = null
-
-        //mViewModel.setCurrentParentCategory((requireContext() as ProductsActivity).getCurrentParentCategory())
-
-        /*var productsLst = ArrayList<ProductsEntity>()
-        if (!(activity as ProductsActivity).isEditPublishedProduct) {
-            arguments?.getParcelableArrayList<ProductsEntity>(Constants.INTENT_SELECTED_PRODUCT)?.let {
-                productsLst = it
-            }
-        }*/
-
-        if (arguments?.containsKey(Constants.INTENT_PARENT_CATEGORY_ID)!!) {
-            parentCatID = arguments?.getString(Constants.INTENT_PARENT_CATEGORY_ID)
-        }
-
-
+    private fun initObservers() {
         mViewModel.showLoader().observe(viewLifecycleOwner, object : Observer<Boolean> {
             override fun onChanged(value: Boolean) {
                 if (value) {
@@ -113,15 +88,15 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
             }
         })
 
-        mViewModel.getAllMerchantActiveProductsObserver().observe(viewLifecycleOwner, object :
-            Observer<ArrayList<ProductsEntity>> {
+        mViewModel.obsvGetProducts().observe(viewLifecycleOwner, object :
+                Observer<ArrayList<ProductsEntity>> {
             override fun onChanged(productsPriceLst: ArrayList<ProductsEntity>) {
                 initAdapter(productsPriceLst)
             }
         })
 
-        mViewModel.saveAsDraftObserver().observe(viewLifecycleOwner, object :
-            Observer<Boolean> {
+        mViewModel.obsvSaveAsDraft().observe(viewLifecycleOwner, object :
+                Observer<Boolean> {
             override fun onChanged(saveAsDraft: Boolean) {
                 if (saveAsDraft) {
                     launchDashboard()
@@ -129,26 +104,32 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
             }
         })
 
-        mViewModel.moveToNextCategoryObserver().observe(viewLifecycleOwner, object :
-            Observer<Boolean> {
+        mViewModel.obsvMoveToNextCategory().observe(viewLifecycleOwner, object :
+                Observer<Boolean> {
             override fun onChanged(isNextCatAvailable: Boolean) {
                 proceedNext()
             }
         })
+    }
 
-        editProductID?.let {
-            mViewModel.setMerchantActiveProducts(it)
-        } ?: run {
-            parentCatID?.let {
-                mViewModel.getProducts(it)
-            }
-        }
+    override fun initData() {
+        mViewModel.setCurrentCategory(mActivityViewModel.getCurrentCategory())
 
         var strNextLabel = requireContext().getString(R.string.next_category)
         if (!mActivityViewModel.hasNextCategory()) {
             strNextLabel = requireContext().getString(R.string.review)
         }
         mBtnNextCategory.text = strNextLabel
+
+        if (mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_PRODUCT) {
+            arguments?.let {
+                mViewModel.getProductByID(it.getInt(Constants.INTENT_PRODUCT_ID))
+            }
+        } else if (mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_CATEGORIES) {
+            mViewModel.getPublishedProducts()
+        } else {
+            mViewModel.getDraftProducts()
+        }
     }
 
     private fun initAdapter(productsPriceLst: ArrayList<ProductsEntity>) {
@@ -180,17 +161,18 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
 
     private fun proceedNext() {
         if (mActivityViewModel.hasNextCategory()) {
-            mActivityViewModel.updateCurrentCategory()
             launchProductsScreen()
         } else {
-            //mViewModel.checkProductsToPublish()
             launchSummaryScreen()
         }
     }
 
     private fun launchProductsScreen() {
+        mActivityViewModel.updateCurrentCategory()
         (requireContext() as ProductsActivity).clearAllFragmentsInclusive(ProductsPriceFragment::class.simpleName)
-        if ((requireContext() as ProductsActivity).isEditPublishedProduct) {
+        if (mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_PRODUCT
+                || mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_CATEGORIES
+                || mActivityViewModel.getProductSelectionState() == ProductSelectionState.ADD_PRICE) {
             (requireContext() as ProductsActivity).addFragment(ProductsPriceFragment(), null)
         } else {
             (requireContext() as ProductsActivity).addFragment(ProductsSelectionFragment(), null)

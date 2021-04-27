@@ -77,7 +77,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
         mViewModel = ViewModelProviders.of(this).get(ProductsFragmentViewModel::class.java)
         mActivityViewModel = ViewModelProviders.of(requireActivity()).get(ProductsActivityViewModel::class.java)
         (requireActivity() as ProductsActivity).supportActionBar?.title = mActivityViewModel.getCurrentCategory()?.parent_cat
-        mViewModel.setCurrentCat(mActivityViewModel.getCurrentCategory())
+        mViewModel.setCurrentCategory(mActivityViewModel.getCurrentCategory())
 
         mRvProducts = baseView.findViewById(R.id.rv_parent_category)
         mBtnSaveAsDraft = baseView.findViewById(R.id.btn_save_as_draft)
@@ -141,6 +141,9 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
 
         mViewModel.proceedNextToCapturePriceObserver().observe(viewLifecycleOwner, object : Observer<ArrayList<ProductsEntity>> {
             override fun onChanged(selectedLst: ArrayList<ProductsEntity>) {
+                if (mActivityViewModel.hasNextCategory()) {
+                    mActivityViewModel.updateCurrentCategory()
+                }
                 launchPriceScreen(selectedLst)
             }
         })

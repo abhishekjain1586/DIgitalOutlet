@@ -21,7 +21,6 @@ class ProductsActivity : BaseActivity()/*, View.OnClickListener, OnItemClickList
     //var currentParentCatPosition: Int = 0
     private lateinit var fragmentManager: FragmentManager
     //var isEditPublishedProduct = false
-    private var productId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +57,7 @@ class ProductsActivity : BaseActivity()/*, View.OnClickListener, OnItemClickList
     }
 
     private fun initData() {
+        var productId: Int = -1
         var enumProductState = ProductSelectionState.ADD_NEW
         if (intent.hasExtra(Constants.INTENT_PRODUCT_SELECTION_STATE)) {
             enumProductState = intent.getSerializableExtra(Constants.INTENT_PRODUCT_SELECTION_STATE) as ProductSelectionState
@@ -65,20 +65,22 @@ class ProductsActivity : BaseActivity()/*, View.OnClickListener, OnItemClickList
         mViewModel.setProductSelectionState(enumProductState)
         mViewModel.setCategoryLst(intent.getParcelableArrayListExtra(Constants.INTENT_SELECTED_PRODUCT_CATEGORIES))
 
-        var showProductSelection = false;
+        var isAddNewProducts = false;
         if (enumProductState == ProductSelectionState.ADD_NEW) {
-            showProductSelection = true;
+            isAddNewProducts = true;
         } else if (enumProductState == ProductSelectionState.EDIT_PRODUCT) {
             productId = intent.getIntExtra(Constants.INTENT_PRODUCT_ID, 0)
         }
 
         supportActionBar?.title = mViewModel.getCurrentCategory()?.parent_cat
 
-        if (showProductSelection) {
+        if (isAddNewProducts) {
             addFragment(ProductsSelectionFragment())
         } else {
             val bundle = Bundle()
-            bundle.putInt(Constants.INTENT_PRODUCT_ID, intent.getIntExtra(Constants.INTENT_PRODUCT_ID, 0))
+            if (productId != -1) {
+                bundle.putInt(Constants.INTENT_PRODUCT_ID, productId)
+            }
             addFragment(ProductsPriceFragment(), bundle)
         }
 

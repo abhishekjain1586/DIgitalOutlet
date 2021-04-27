@@ -86,8 +86,8 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         return mLvdSaveAsDraft!!
     }
 
-    fun setCurrentCat(cat: ParentCategory?) {
-        mCurrentCategory = cat
+    fun setCurrentCategory(parentCategory: ParentCategory?) {
+        mCurrentCategory = parentCategory
     }
     // End of Live Data Initialization
 

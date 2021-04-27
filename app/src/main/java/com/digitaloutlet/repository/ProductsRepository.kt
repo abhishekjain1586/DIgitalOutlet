@@ -101,8 +101,8 @@ class ProductsRepository {
         ) as ArrayList<ProductsEntity>
     }
 
-    fun getActiveProductsPricesByParentCategoryId(parentCatId: String): ArrayList<ProductsEntity>? {
-        return DBHelper.getInstance().getProductsDao().getActiveProductsPricesByParentCategoryId(DOPrefs.getMerchantId(), parentCatId) as ArrayList<ProductsEntity>
+    fun getProductsByState(parentCatId: String, state: String): ArrayList<ProductsEntity>? {
+        return DBHelper.getInstance().getProductsDao().getProductsByState(DOPrefs.getMerchantId(), parentCatId, state) as ArrayList<ProductsEntity>
     }
 
     fun getAllProductsToPublish(): ArrayList<ProductsEntity>? {
@@ -114,7 +114,7 @@ class ProductsRepository {
     }
 
     fun getProductByID(productID: Int): ProductsEntity {
-        return DBHelper.getInstance().getProductsDao().getProductByID(DOPrefs.getMerchantId(), productID) as ProductsEntity
+        return DBHelper.getInstance().getProductsDao().getProductByID(DOPrefs.getMerchantId(), productID)
     }
 
     fun saveProductsInDB(productsLst: ArrayList<ProductsEntity>, parentCatName: String?): ArrayList<ProductsEntity> {

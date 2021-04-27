@@ -12,8 +12,8 @@ abstract class ProductsDao : BaseDao<ProductsEntity>() {
     @Query("select * from products where merchant_id=:merchantId AND parent_cat_id=:parentCatId")
     abstract fun getProductsByParentCategoryId(merchantId: String, parentCatId: Int) : List<ProductsEntity>?
 
-    @Query("select * from products where merchant_id=:merchantId AND parent_cat_id=:parentCatId AND `action` is not 'D'")
-    abstract fun getActiveProductsPricesByParentCategoryId(merchantId: String, parentCatId: String) : List<ProductsEntity>?
+    @Query("select * from products where merchant_id=:merchantId AND parent_cat_id=:parentCatId AND product_state=:state")
+    abstract fun getProductsByState(merchantId: String, parentCatId: String, state: String) : List<ProductsEntity>?
 
     /*@Query("SELECT * FROM products where merchant_id=:merchantId AND parent_cat_id=:parentCatId AND `action`!='D'")
     abstract fun getProductsPrices(merchantId: String, parentCatId: Int) : List<ProductsEntity>?*/

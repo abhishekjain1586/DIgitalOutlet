@@ -4,19 +4,18 @@ import androidx.lifecycle.ViewModel
 import com.digitaloutlet.db.entities.ProductsEntity
 import com.digitaloutlet.model.response.ParentCategory
 import com.digitaloutlet.repository.ProductsRepository
-import com.digitaloutlet.utils.Constants
 
 class ProductsPriceFragmentViewModel : ViewModel() {
 
     private var loader: SingleLiveEvent<Boolean>? = null
     private var errorDialog: SingleLiveEvent<String>? = null
-    private var mLiveDataMerchantActiveProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
-    private var mLiveDataMoveToNextCategoryObserver: SingleLiveEvent<Boolean>? = null
-    private var mLiveDataSaveAsDraft: SingleLiveEvent<Boolean>? = null
+    private var mLvdProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
+    private var mLvdMoveToNextCategory: SingleLiveEvent<Boolean>? = null
+    private var mLvdSaveAsDraft: SingleLiveEvent<Boolean>? = null
 
     private val mProductsRepository = ProductsRepository()
 
-    private var mCurrentParentCat: ParentCategory? = null
+    private var mCurrentCategory: ParentCategory? = null
     private var mMerchantActiveProductsLst = ArrayList<ProductsEntity>()
 
 
@@ -35,63 +34,72 @@ class ProductsPriceFragmentViewModel : ViewModel() {
         return errorDialog!!
     }
 
-    fun getAllMerchantActiveProductsObserver(): SingleLiveEvent<java.util.ArrayList<ProductsEntity>> {
-        if (mLiveDataMerchantActiveProducts == null) {
-            mLiveDataMerchantActiveProducts = SingleLiveEvent()
+    fun obsvGetProducts(): SingleLiveEvent<java.util.ArrayList<ProductsEntity>> {
+        if (mLvdProducts == null) {
+            mLvdProducts = SingleLiveEvent()
         }
-        return mLiveDataMerchantActiveProducts!!
+        return mLvdProducts!!
     }
 
-    fun moveToNextCategoryObserver(): SingleLiveEvent<Boolean> {
-        if (mLiveDataMoveToNextCategoryObserver == null) {
-            mLiveDataMoveToNextCategoryObserver = SingleLiveEvent()
+    fun obsvMoveToNextCategory(): SingleLiveEvent<Boolean> {
+        if (mLvdMoveToNextCategory == null) {
+            mLvdMoveToNextCategory = SingleLiveEvent()
         }
-        return mLiveDataMoveToNextCategoryObserver!!
+        return mLvdMoveToNextCategory!!
     }
 
-    fun saveAsDraftObserver(): SingleLiveEvent<Boolean> {
-        if (mLiveDataSaveAsDraft == null) {
-            mLiveDataSaveAsDraft = SingleLiveEvent()
+    fun obsvSaveAsDraft(): SingleLiveEvent<Boolean> {
+        if (mLvdSaveAsDraft == null) {
+            mLvdSaveAsDraft = SingleLiveEvent()
         }
-        return mLiveDataSaveAsDraft!!
+        return mLvdSaveAsDraft!!
     }
     // End of Live Data Initialization
 
-
-    fun setCurrentParentCategory(parentCat: ParentCategory) {
-        mCurrentParentCat = parentCat
+    fun setCurrentCategory(parentCat: ParentCategory?) {
+        mCurrentCategory = parentCat
     }
 
-    /*fun setMerchantActiveProducts(lst: ArrayList<ProductsEntity>) {
-        mMerchantActiveProductsLst.clear()
-        mMerchantActiveProductsLst.addAll(lst)
+    fun getCurrentCategory(): ParentCategory? {
+        return mCurrentCategory
+    }
 
-        mLiveDataMerchantActiveProducts?.value = mMerchantActiveProductsLst
-    }*/
+    fun getPublishedProducts() {
+        getProducts(true)
+    }
 
-    fun getProducts(parentCatID: String) {
+    fun getDraftProducts() {
+        getProducts()
+    }
+
+    private fun getProducts(isPublished: Boolean = false) {
         mMerchantActiveProductsLst.clear()
-        val lst = mProductsRepository.getActiveProductsPricesByParentCategoryId(parentCatID)
+        var lst: ArrayList<ProductsEntity>? = null
+        var state = ProductsEntity.PRODUCT_STATE_DRAFT
+        if (isPublished) {
+            state = ProductsEntity.PRODUCT_STATE_PUBLISHED
+        }
+        lst = mProductsRepository.getProductsByState("" + mCurrentCategory?.id, state)
         lst?.let {
             mMerchantActiveProductsLst.addAll(it)
-            mLiveDataMerchantActiveProducts?.value = mMerchantActiveProductsLst
+            mLvdProducts?.value = mMerchantActiveProductsLst
         }
     }
 
-    fun setMerchantActiveProducts(productID: Int) {
+    fun getProductByID(productID: Int) {
         mMerchantActiveProductsLst.clear()
         mMerchantActiveProductsLst.add(mProductsRepository.getProductByID(productID))
 
-        mLiveDataMerchantActiveProducts?.value = mMerchantActiveProductsLst
+        mLvdProducts?.value = mMerchantActiveProductsLst
     }
 
     fun savePriceInDB(isSaveAsDraft: Boolean) {
         mProductsRepository.savePriceInDB(mMerchantActiveProductsLst)
 
         if (isSaveAsDraft) {
-            mLiveDataSaveAsDraft?.value = true
+            mLvdSaveAsDraft?.value = true
         } else {
-            mLiveDataMoveToNextCategoryObserver?.value = true
+            mLvdMoveToNextCategory?.value = true
         }
 
     }

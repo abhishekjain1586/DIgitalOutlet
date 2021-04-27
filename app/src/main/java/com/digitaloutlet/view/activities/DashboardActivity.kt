@@ -24,6 +24,7 @@ import com.digitaloutlet.utils.DOPrefs
 import com.digitaloutlet.utils.DialogUtil
 import com.digitaloutlet.view.base.BaseActivity
 import com.digitaloutlet.view.dialogfragments.AddCategoryProductSelectionDialogFragment
+import com.digitaloutlet.view.enums.ProductSelectionState
 import com.digitaloutlet.viewholder.ActiveProductsChildViewHolder
 import com.digitaloutlet.viewholder.ActiveProductsParentViewHolder.Companion.ACTION_TYPE_EXPAND_COLLAPSE
 import com.digitaloutlet.viewmodel.DashboardActivityViewModel
@@ -324,6 +325,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener,
         intent.putParcelableArrayListExtra(Constants.INTENT_SELECTED_PRODUCT_CATEGORIES, selectedCatLst)
         if (!isDraft) {
             intent.putExtra(Constants.INTENT_PRODUCT_ID, childObjToEdit?.productId!!.toInt())
+            intent.putExtra(Constants.INTENT_PRODUCT_SELECTION_STATE, ProductSelectionState.EDIT_PRODUCT)
             intent.putExtra(Constants.INTENT_EDIT_PUBLISHED_PRODUCT, true)
         }
         startActivity(intent)
