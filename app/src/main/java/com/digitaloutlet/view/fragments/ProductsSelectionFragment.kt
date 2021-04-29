@@ -130,7 +130,7 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
             }
         })
 
-        mViewModel.observerSaveAsDraft().observe(viewLifecycleOwner, object :
+        mViewModel.obsvSaveAsDraft().observe(viewLifecycleOwner, object :
             Observer<Boolean> {
             override fun onChanged(saveAsDraft: Boolean) {
                 if (saveAsDraft) {
@@ -139,19 +139,13 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
             }
         })
 
-        mViewModel.proceedNextToCapturePriceObserver().observe(viewLifecycleOwner, object : Observer<ArrayList<ProductsEntity>> {
+        mViewModel.obsvSaveAndProceed().observe(viewLifecycleOwner, object : Observer<ArrayList<ProductsEntity>> {
             override fun onChanged(selectedLst: ArrayList<ProductsEntity>) {
-                if (mActivityViewModel.hasNextCategory()) {
-                    mActivityViewModel.updateCurrentCategory()
+                if (selectedLst.isEmpty()) {
+                    confirmUser()
+                    return
                 }
                 launchPriceScreen(selectedLst)
-            }
-        })
-
-        mViewModel.userConsentToProceedObserver().observe(viewLifecycleOwner, object :
-            Observer<Boolean> {
-            override fun onChanged(isNextCatAvailable: Boolean) {
-                confirmUser()
             }
         })
     }
@@ -185,9 +179,9 @@ class ProductsSelectionFragment : BaseFragment(), View.OnClickListener,
 
     private fun confirmUser() {
         val isNextCatAvailable = mActivityViewModel.hasNextCategory()
-        var errorMsg = resources.getString(R.string.error_no_products_selected_to_proceed_further)
+        var errorMsg = resources.getString(R.string.error_no_products_selected_proceed_to_review)
         if (isNextCatAvailable) {
-            errorMsg = resources.getString(R.string.error_no_products_selected)
+            errorMsg = resources.getString(R.string.error_no_products_selected_proceed_next_category)
         }
         DialogUtil.showCommonActionDialog(requireContext(), Constants.EMPTY,
             errorMsg,

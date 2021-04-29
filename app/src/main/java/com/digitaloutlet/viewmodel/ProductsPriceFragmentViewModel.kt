@@ -64,15 +64,7 @@ class ProductsPriceFragmentViewModel : ViewModel() {
         return mCurrentCategory
     }
 
-    fun getPublishedProducts() {
-        getProducts(true)
-    }
-
-    fun getDraftProducts() {
-        getProducts()
-    }
-
-    private fun getProducts(isPublished: Boolean = false) {
+    fun getProducts(isPublished: Boolean = false) {
         mMerchantActiveProductsLst.clear()
         var lst: ArrayList<ProductsEntity>? = null
         var state = ProductsEntity.PRODUCT_STATE_DRAFT

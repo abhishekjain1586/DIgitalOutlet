@@ -121,8 +121,8 @@
     <string name="add_manually">Add Manually</string>
     <string name="save_as_draft">Save as Draft</string>
     <string name="proceed_to_next">Proceed to Next</string>
-    <string name="error_no_products_selected">No Products selected. Do you want to proceed with Next Category?</string>
-    <string name="error_no_products_selected_to_proceed_further">Please select required Products to proceed further</string>
+    <string name="error_no_products_selected_proceed_next_category">No Products selected. Do you want to proceed with Next Category?</string>
+    <string name="error_no_products_selected_proceed_to_review">No Products selected. Proceed to Review other products?</string>
     <string name="menu_search">Search</string>
     <string name="hint_search_product">Search Product</string>
 

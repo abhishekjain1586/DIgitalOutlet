@@ -39,7 +39,7 @@
         <item name="android:textSize">@dimen/text_size_14sp</item>
     </style>
 
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/bg_common_dialog</item>
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@null</item>
     </style>
 </resources>

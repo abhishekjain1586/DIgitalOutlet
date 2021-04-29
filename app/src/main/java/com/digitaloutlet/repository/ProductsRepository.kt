@@ -130,9 +130,10 @@ class ProductsRepository {
                         obj.productStateForMerchant = ProductsEntity.PRODUCT_STATE_DRAFT
                         obj.action = ProductsEntity.ACTION_ADD
 
+                        selectedProductLst.add(obj)
                         DBHelper.getInstance().getProductsDao().insertOrUpdate(obj)
                     }
-                    selectedProductLst.add(obj)
+                    //selectedProductLst.add(obj)
                 } else {
                     if (!obj.merchantId.isNullOrEmpty()) {
                         if (obj.productStateForMerchant!!.equals(ProductsEntity.PRODUCT_STATE_DRAFT)) {

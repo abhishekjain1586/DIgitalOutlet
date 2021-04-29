@@ -125,10 +125,8 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
             arguments?.let {
                 mViewModel.getProductByID(it.getInt(Constants.INTENT_PRODUCT_ID))
             }
-        } else if (mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_CATEGORIES) {
-            mViewModel.getPublishedProducts()
         } else {
-            mViewModel.getDraftProducts()
+            mViewModel.getProducts(mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_CATEGORIES)
         }
     }
 

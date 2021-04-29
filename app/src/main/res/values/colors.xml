@@ -15,6 +15,7 @@
     <color name="colorRadioUnselected">#4D000000</color>
     <color name="colorCategorySelection">#80000000</color>
     <color name="colorProfileItem">#E5E5E5</color>
+    <color name="colorRippleEffect">#E0E0E0</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>

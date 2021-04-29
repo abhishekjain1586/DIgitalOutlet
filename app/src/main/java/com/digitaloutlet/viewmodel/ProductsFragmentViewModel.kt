@@ -12,15 +12,13 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
     private var errorDialog: SingleLiveEvent<String>? = null
     private var mLvdProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
     private var mLvdProductChangeState: SingleLiveEvent<HashMap<Int, ProductsEntity>>? = null
-    private var mLiveDataProceedNextToCapturePrice: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
-    private var mLiveDataUserConsentToProceed: SingleLiveEvent<Boolean>? = null
+    private var mLvdSaveAndProceed: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
     private var mLvdSaveAsDraft: SingleLiveEvent<Boolean>? = null
 
     private var mProductsRepository = ProductsRepository()
 
     private var mProductsLst = ArrayList<ProductsEntity>()
     private var mCurrentCategory: ParentCategory? = null
-    //var mCurrentParentCat: ParentCategory? = null
 
 
     // Live Data Initialization
@@ -61,25 +59,17 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         return mLvdProductChangeState!!
     }
 
-    fun proceedNextToCapturePriceObserver(): SingleLiveEvent<ArrayList<ProductsEntity>> {
-        if (mLiveDataProceedNextToCapturePrice == null) {
-            mLiveDataProceedNextToCapturePrice = SingleLiveEvent()
+    fun obsvSaveAndProceed(): SingleLiveEvent<ArrayList<ProductsEntity>> {
+        if (mLvdSaveAndProceed == null) {
+            mLvdSaveAndProceed = SingleLiveEvent()
         }
-        return mLiveDataProceedNextToCapturePrice!!
+        return mLvdSaveAndProceed!!
     }
     // End of Live Data Initialization
 
 
     // Live Data Initialization For Price Screen
-
-    fun userConsentToProceedObserver(): SingleLiveEvent<Boolean> {
-        if (mLiveDataUserConsentToProceed == null) {
-            mLiveDataUserConsentToProceed = SingleLiveEvent()
-        }
-        return mLiveDataUserConsentToProceed!!
-    }
-
-    fun observerSaveAsDraft(): SingleLiveEvent<Boolean> {
+    fun obsvSaveAsDraft(): SingleLiveEvent<Boolean> {
         if (mLvdSaveAsDraft == null) {
             mLvdSaveAsDraft = SingleLiveEvent()
         }
@@ -163,11 +153,7 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         if (isSaveAsDraft) {
             mLvdSaveAsDraft?.value = true
         } else {
-            if (!selectedProductLst.isNullOrEmpty()) {
-                mLiveDataProceedNextToCapturePrice?.value = selectedProductLst
-            } else {
-                mLiveDataUserConsentToProceed?.value = true
-            }
+            mLvdSaveAndProceed?.value = selectedProductLst
         }
     }
 
