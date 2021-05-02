@@ -16,7 +16,6 @@ class SearchProductRepository {
 
     interface OnSearchProductListener {
         fun onSuccessSearchProduct(response: ResProducts)
-        fun onSuccessFailureSearchProduct(errMsg: String)
         fun onFailureSearchProduct(errMsg: String)
     }
 
@@ -39,12 +38,12 @@ class SearchProductRepository {
                         if (response.body() != null) {
                             mListener?.onSuccessSearchProduct(response.body() as ResProducts)
                         } else if (response.errorBody() != null) {
-                            mListener?.onSuccessFailureSearchProduct(response.errorBody()?.string() ?: Constants.EMPTY)
+                            mListener?.onFailureSearchProduct(response.errorBody()?.string() ?: Constants.EMPTY)
                         } else {
                             mListener?.onFailureSearchProduct(DOApplication._INSTANCE.getString(R.string.error_internal_server_error))
                         }
                     } else {
-                        mListener?.onFailureSearchProduct("")
+                        mListener?.onFailureSearchProduct(DOApplication._INSTANCE.getString(R.string.error_internal_server_error))
                     }
                 }
 

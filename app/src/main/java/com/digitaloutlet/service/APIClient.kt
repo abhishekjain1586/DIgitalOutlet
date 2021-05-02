@@ -39,7 +39,7 @@ interface APIClient {
     @POST("MerchantProductCRUD")
     fun publishProducts(@Body reqPublishProducts: ReqPublishProducts): Call<ResPublishProduct>
 
-    @GET("searchProductDetails?query=suthar")
+    @GET("searchProductDetails")
     fun searchProductQuery(@QueryMap map: Map<String, String>): Call<ResProducts>
 
     @GET("digioutlet/getProductDetailsOnMSIDN")

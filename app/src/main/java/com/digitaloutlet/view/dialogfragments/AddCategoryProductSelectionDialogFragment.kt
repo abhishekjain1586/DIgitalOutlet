@@ -13,6 +13,7 @@ import com.digitaloutlet.R
 import com.digitaloutlet.application.DOApplication
 import com.digitaloutlet.utils.DOUtils
 import com.digitaloutlet.view.activities.CreateCatalogActivity
+import com.digitaloutlet.view.activities.SearchProductActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -125,7 +126,7 @@ class AddCategoryProductSelectionDialogFragment : BottomSheetDialogFragment(), V
     }
 
     private fun launchSearchProductsScreen() {
-        val intent = Intent(requireContext(), CreateCatalogActivity::class.java)
+        val intent = Intent(requireContext(), SearchProductActivity::class.java)
         startActivity(intent)
     }
 }

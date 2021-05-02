@@ -165,4 +165,9 @@
     <string name="logout">Logout</string>
     <string name="product_history">Product History</string>
     <string name="delete_my_account">Delect My Account</string>
+
+
+    <!-- Product Search Screen -->
+    <string name="title_search_product">Search Product</string>
+    <string name="error_no_search_product">No Search Product</string>
 </resources>

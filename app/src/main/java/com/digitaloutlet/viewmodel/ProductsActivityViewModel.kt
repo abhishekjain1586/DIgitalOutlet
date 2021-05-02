@@ -13,7 +13,6 @@ class ProductsActivityViewModel : ViewModel(), ProductsRepository.OnProductsList
 
     private var loader: SingleLiveEvent<Boolean>? = null
     private var errorDialog: SingleLiveEvent<String>? = null
-    //private var mLiveDataParentCategoryName: SingleLiveEvent<String>? = null
     private var mLiveDataProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
 
     private var mProductsLst = ArrayList<ProductsEntity>()
@@ -50,8 +49,6 @@ class ProductsActivityViewModel : ViewModel(), ProductsRepository.OnProductsList
     fun setCategoryLst(selectedParentCatLst: ArrayList<ParentCategory>) {
         mCategoryLst.clear()
         mCategoryLst.addAll(selectedParentCatLst)
-
-        //mLiveDataParentCategoryName?.value = getCurrentParentCat()?.parent_cat ?: Constants.EMPTY
     }
 
     fun getCurrentCategory(): ParentCategory? {
