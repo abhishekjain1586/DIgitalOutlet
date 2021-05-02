@@ -114,20 +114,13 @@ class ProductsPriceFragment : BaseFragment(), View.OnClickListener,
 
     override fun initData() {
         mViewModel.setCurrentCategory(mActivityViewModel.getCurrentCategory())
-
+        mViewModel.setProductSelectionState(mActivityViewModel.getProductSelectionState())
         var strNextLabel = requireContext().getString(R.string.next_category)
         if (!mActivityViewModel.hasNextCategory()) {
             strNextLabel = requireContext().getString(R.string.review)
         }
         mBtnNextCategory.text = strNextLabel
-
-        if (mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_PRODUCT) {
-            arguments?.let {
-                mViewModel.getProductByID(it.getInt(Constants.INTENT_PRODUCT_ID))
-            }
-        } else {
-            mViewModel.getProducts(mActivityViewModel.getProductSelectionState() == ProductSelectionState.EDIT_CATEGORIES)
-        }
+        mViewModel.getProducts(arguments?.getInt(Constants.INTENT_PRODUCT_ID))
     }
 
     private fun initAdapter(productsPriceLst: ArrayList<ProductsEntity>) {

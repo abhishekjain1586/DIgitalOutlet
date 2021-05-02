@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.digitaloutlet.db.entities.ProductsEntity
 import com.digitaloutlet.model.response.ParentCategory
 import com.digitaloutlet.repository.ProductsRepository
+import com.digitaloutlet.view.enums.ProductSelectionState
 
 class ProductsPriceFragmentViewModel : ViewModel() {
 
@@ -15,6 +16,7 @@ class ProductsPriceFragmentViewModel : ViewModel() {
 
     private val mProductsRepository = ProductsRepository()
 
+    private lateinit var mSelectionState: ProductSelectionState
     private var mCurrentCategory: ParentCategory? = null
     private var mMerchantActiveProductsLst = ArrayList<ProductsEntity>()
 
@@ -60,15 +62,23 @@ class ProductsPriceFragmentViewModel : ViewModel() {
         mCurrentCategory = parentCat
     }
 
+    fun setProductSelectionState(selectionState: ProductSelectionState) {
+        mSelectionState = selectionState
+    }
+
     fun getCurrentCategory(): ParentCategory? {
         return mCurrentCategory
     }
 
-    fun getProducts(isPublished: Boolean = false) {
+    fun getProducts(productID: Int?) {
+        if (mSelectionState == ProductSelectionState.EDIT_PRODUCT) {
+            getProductByID(productID!!)
+            return
+        }
         mMerchantActiveProductsLst.clear()
-        var lst: ArrayList<ProductsEntity>? = null
+        var lst: ArrayList<ProductsEntity>?
         var state = ProductsEntity.PRODUCT_STATE_DRAFT
-        if (isPublished) {
+        if (mSelectionState == ProductSelectionState.EDIT_CATEGORIES) {
             state = ProductsEntity.PRODUCT_STATE_PUBLISHED
         }
         lst = mProductsRepository.getProductsByState("" + mCurrentCategory?.id, state)
