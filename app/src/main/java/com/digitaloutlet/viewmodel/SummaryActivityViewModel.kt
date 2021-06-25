@@ -10,31 +10,23 @@ import com.digitaloutlet.repository.PublishProductRepository
 
 class SummaryActivityViewModel : ViewModel(), PublishProductRepository.OnPublishProductsListener {
 
-    private var loader: SingleLiveEvent<Boolean>? = null
-    private var errorDialog: SingleLiveEvent<String>? = null
+    private var loader = SingleLiveEvent<Boolean>()
+    private var errorDialog = SingleLiveEvent<String>()
     private var mLiveDataProducts: SingleLiveEvent<ArrayList<ProductsEntity>>? = null
     private var mLiveDataPublishProducts: SingleLiveEvent<String>? = null
 
-    private var mProductsRepository: ProductsRepository? = null
+    private var mProductsRepository = ProductsRepository()
     private var mPublishProductsRepository: PublishProductRepository? = null
 
     private var mProductsLst = ArrayList<ProductsEntity>()
 
     // Live Data Initialization
     fun showLoader() : SingleLiveEvent<Boolean> {
-        if (loader == null) {
-            loader = SingleLiveEvent()
-        }
-
-        return loader!!
+        return loader
     }
 
     fun showErrorDialog() : SingleLiveEvent<String> {
-        if (errorDialog == null) {
-            errorDialog = SingleLiveEvent()
-        }
-
-        return errorDialog!!
+        return errorDialog
     }
 
     fun getProductsObserver(): SingleLiveEvent<java.util.ArrayList<ProductsEntity>> {
@@ -54,12 +46,8 @@ class SummaryActivityViewModel : ViewModel(), PublishProductRepository.OnPublish
     }
 
     fun getAllProductsToPublish() {
-        if (mProductsRepository == null) {
-            mProductsRepository = ProductsRepository()
-        }
-
-        val tempLst = mProductsRepository?.getAllProductsToPublish()
-        val parentCatLst = mProductsRepository?.getMerchantCategoriesLstToPublish()
+        val tempLst = mProductsRepository.getAllProductsToPublish()
+        val parentCatLst = mProductsRepository.getMerchantCategoriesLstToPublish()
 
         if (!tempLst.isNullOrEmpty()) {
             for (parentCatObj in parentCatLst!!) {
@@ -76,7 +64,7 @@ class SummaryActivityViewModel : ViewModel(), PublishProductRepository.OnPublish
             mProductsLst.addAll(tempLst)
             mLiveDataProducts?.value = mProductsLst
         } else {
-            errorDialog?.value = DOApplication._INSTANCE.getString(R.string.error_no_products_to_publish)
+            errorDialog.value = DOApplication._INSTANCE.getString(R.string.error_no_products_to_publish)
         }
     }
 
@@ -85,27 +73,27 @@ class SummaryActivityViewModel : ViewModel(), PublishProductRepository.OnPublish
             mPublishProductsRepository = PublishProductRepository()
             mPublishProductsRepository?.setListener(this)
         }
-        loader?.value = true
+        loader.value = true
         mPublishProductsRepository?.publishProducts()
     }
 
     override fun onSuccessPublishProducts(response: ResPublishProduct) {
-        loader?.value = false
+        loader.value = false
         if (response.status == 1) {
             mLiveDataPublishProducts?.value = response.message
         } else {
-            errorDialog?.value = response.message?.let { it } ?: DOApplication._INSTANCE.resources.getString(R.string.error_internal_server_error)
+            errorDialog.value = response.message?.let { it } ?: DOApplication._INSTANCE.resources.getString(R.string.error_internal_server_error)
         }
     }
 
     override fun onSuccessFailurePublishProducts(errMsg: String) {
-        loader?.value = false
-        errorDialog?.value = errMsg
+        loader.value = false
+        errorDialog.value = errMsg
     }
 
     override fun onFailurePublishProducts(errMsg: String) {
-        loader?.value = false
-        errorDialog?.value = errMsg
+        loader.value = false
+        errorDialog.value = errMsg
     }
 
     /*fun proceedNextToCapturePriceObserver(): SingleLiveEvent<ArrayList<ProductsEntity>> {
