@@ -111,7 +111,7 @@
     <string name="skip_for_now">Skip for Now</string>
     <string name="choose_category_title">Choose Product Categories to create your Digital Menu</string>
     <string name="hello">Hello</string>
-    <string name="select_product_categories">Please select atleast One Product Category to proceed further</string>
+    <string name="select_product_categories">Please select atleast one Product Category to proceed further</string>
 
 
     <!-- Select Products Screen -->

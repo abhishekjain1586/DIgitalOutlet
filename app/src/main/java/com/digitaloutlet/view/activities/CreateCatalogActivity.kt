@@ -107,11 +107,11 @@ class CreateCatalogActivity : BaseActivity(), View.OnClickListener,
             }
         })
 
-        mViewModel.observerProceedNextToSelectProducts().observe(this, object : Observer<ArrayList<ParentCategory>> {
+        /*mViewModel.observerProceedNextToSelectProducts().observe(this, object : Observer<ArrayList<ParentCategory>> {
             override fun onChanged(selectedParentCatLst: ArrayList<ParentCategory>) {
                 launchProductSelectionScreen(selectedParentCatLst)
             }
-        })
+        })*/
     }
 
     private fun initAdapter() {
@@ -131,7 +131,7 @@ class CreateCatalogActivity : BaseActivity(), View.OnClickListener,
             }
 
             R.id.btn_confirm -> {
-                mViewModel.proceedNextToSelectProducts()
+                proceedNextToSelectProducts()
             }
         }
     }
@@ -139,6 +139,16 @@ class CreateCatalogActivity : BaseActivity(), View.OnClickListener,
     override fun onItemClick(position: Int, parentCat: ParentCategory, type: Int) {
         adapter.notifyItemChanged(position, !parentCat.isSelected)
         mViewModel.updateParentCategoryStatus(parentCat)
+    }
+
+    private fun proceedNextToSelectProducts() {
+        val selCatLst = mViewModel.getSelectedCategories()
+        if (selCatLst.isNullOrEmpty()) {
+            DialogUtil.showCommonActionDialog(this@CreateCatalogActivity, Constants.EMPTY, getString(R.string.select_product_categories), false, null)
+            return
+        }
+
+        launchProductSelectionScreen(selCatLst)
     }
 
     private fun launchProductSelectionScreen(selectedCatLst: ArrayList<ParentCategory>) {

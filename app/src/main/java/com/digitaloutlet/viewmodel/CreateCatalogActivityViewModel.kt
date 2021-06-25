@@ -10,30 +10,20 @@ import com.digitaloutlet.repository.ParentCategoryRepository
 class CreateCatalogActivityViewModel : ViewModel(),
     ParentCategoryRepository.OnParentCategoryListener {
 
-    private var loader: SingleLiveEvent<Boolean>? = null
-    private var mLiveDataParentCategory: SingleLiveEvent<ArrayList<ParentCategory>>? = null
-    private var mLiveDataParentCategoryUpdateStatus: SingleLiveEvent<ParentCategory>? = null
-    private var errorDialog: SingleLiveEvent<String>? = null
-    private var mLiveDataSelectedCategories: SingleLiveEvent<ArrayList<ParentCategory>>? = null
+    private var loader = SingleLiveEvent<Boolean>()
+    private var errorDialog = SingleLiveEvent<String>()
+    private var mLiveDataParentCategory = SingleLiveEvent<ArrayList<ParentCategory>>()
 
-    private var mParentCatRepository: ParentCategoryRepository? = null
+    private var mParentCatRepository = ParentCategoryRepository()
 
     private var mCategoriesLst = ArrayList<ParentCategory>()
 
     fun showLoader() : SingleLiveEvent<Boolean> {
-        if (loader == null) {
-            loader = SingleLiveEvent()
-        }
-
-        return loader!!
+        return loader
     }
 
     fun showErrorDialog() : SingleLiveEvent<String> {
-        if (errorDialog == null) {
-            errorDialog = SingleLiveEvent()
-        }
-
-        return errorDialog!!
+        return errorDialog
     }
 
     fun getParentCatLst(): ArrayList<ParentCategory> {
@@ -41,33 +31,28 @@ class CreateCatalogActivityViewModel : ViewModel(),
     }
 
     fun fetchParentCategoriesObserver(): SingleLiveEvent<ArrayList<ParentCategory>> {
-        if (mLiveDataParentCategory == null) {
-            mLiveDataParentCategory = SingleLiveEvent()
+        if (mCategoriesLst.isNullOrEmpty()) {
+            loader.value = true
+            mParentCatRepository.setListener(this)
+            mParentCatRepository.getParentCategories()
+        } else {
+            mLiveDataParentCategory.value = mCategoriesLst
         }
-
-        if (mParentCatRepository == null) {
-            mParentCatRepository = ParentCategoryRepository()
-            mParentCatRepository?.setListener(this)
-        }
-
-        loader?.value = true
-        mParentCatRepository?.getParentCategories()
-
-        return mLiveDataParentCategory!!
+        return mLiveDataParentCategory
     }
 
     override fun onSuccessParentCategory(response: ResParentCategory) {
-        loader?.value = false
+        loader.value = false
         if (response.status == 1) {
             if (!response.records.isNullOrEmpty()) {
                 mCategoriesLst.clear()
                 mCategoriesLst.addAll(response.records!!)
-                mLiveDataParentCategory?.value = mCategoriesLst
+                mLiveDataParentCategory.value = mCategoriesLst
             } else {
-                errorDialog?.value = DOApplication._INSTANCE.resources.getString(R.string.error_no_record_found)
+                errorDialog.value = DOApplication._INSTANCE.resources.getString(R.string.error_no_record_found)
             }
         } else {
-            errorDialog?.value = response.message
+            errorDialog.value = response.message
         }
     }
 
@@ -79,24 +64,15 @@ class CreateCatalogActivityViewModel : ViewModel(),
                     break
                 }
             }
-            mLiveDataParentCategoryUpdateStatus?.value = parentCategory
         }
     }
 
-    fun observerProceedNextToSelectProducts(): SingleLiveEvent<ArrayList<ParentCategory>> {
-        if (mLiveDataSelectedCategories == null) {
-            mLiveDataSelectedCategories = SingleLiveEvent()
-        }
-        return mLiveDataSelectedCategories!!
-    }
-
-    fun proceedNextToSelectProducts() {
-        var selectedCatLst: ArrayList<ParentCategory>? = null
-
+    fun getSelectedCategories(): ArrayList<ParentCategory>? {
         if (mCategoriesLst.isNullOrEmpty()) {
-            return
+            return null
         }
 
+        var selectedCatLst: ArrayList<ParentCategory>? = null
         for (obj in mCategoriesLst) {
             if (obj.isSelected) {
                 if (selectedCatLst == null) {
@@ -105,23 +81,17 @@ class CreateCatalogActivityViewModel : ViewModel(),
                 selectedCatLst.add(obj)
             }
         }
-
-        if (selectedCatLst.isNullOrEmpty()) {
-            errorDialog?.value = DOApplication._INSTANCE.getString(R.string.select_product_categories)
-            return
-        }
-
-        mLiveDataSelectedCategories?.value = selectedCatLst
+        return selectedCatLst
     }
 
     override fun onSuccessFailureParentCategory(errMsg: String) {
-        loader?.value = false
-        errorDialog?.value = errMsg
+        loader.value = false
+        errorDialog.value = errMsg
     }
 
     override fun onFailureParentCategory(errMsg: String) {
-        loader?.value = false
-        errorDialog?.value = errMsg
+        loader.value = false
+        errorDialog.value = errMsg
     }
 
 }
