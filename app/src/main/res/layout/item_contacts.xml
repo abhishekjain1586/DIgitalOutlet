@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/lay_contacts"
+    android:layout_marginBottom="@dimen/dimen_10dp"
+    android:layout_marginLeft="@dimen/dimen_10dp"
+    android:layout_marginRight="@dimen/dimen_10dp"
+    android:background="@drawable/bg_round"
+    android:elevation="@dimen/dimen_3dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/app_margin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/app_margin"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/guideline1"
+        app:layout_constraintRight_toLeftOf="@id/iv_tick"
+        android:padding="@dimen/dimen_5dp"
+        android:text="dfsdfsdf"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <TextView
+        android:id="@+id/tv_phoneno"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        app:layout_constraintLeft_toLeftOf="@id/guideline1"
+        app:layout_constraintRight_toLeftOf="@id/iv_tick"
+        android:padding="@dimen/dimen_5dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:text="dsnfdskfd"
+        android:textColor="@color/colorAppBlack"
+        android:textSize="@dimen/text_size_14sp"/>
+
+    <ImageView
+        android:id="@+id/iv_tick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="@id/tv_name"
+        app:layout_constraintBottom_toBottomOf="@id/tv_phoneno"
+        android:src="@drawable/bg_radio_unselected"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

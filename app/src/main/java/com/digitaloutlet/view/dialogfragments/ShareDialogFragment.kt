@@ -1,23 +1,29 @@
 package com.digitaloutlet.view.dialogfragments
 
+import android.Manifest
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import com.digitaloutlet.R
 import com.digitaloutlet.application.DOApplication
 import com.digitaloutlet.service.ServiceHelper
 import com.digitaloutlet.utils.DOPrefs
 import com.digitaloutlet.utils.DOUtils
+import com.digitaloutlet.view.activities.ContactsActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
+const val REQUEST_CODE_CONTACTS: Int = 1
 
 class ShareDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
@@ -152,6 +158,15 @@ class ShareDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     private fun shareOnSMS() {
-
+        if( checkSelfPermission( requireContext(), Manifest.permission.READ_CONTACTS ) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                REQUEST_CODE_CONTACTS
+            )
+        } else {
+            val smsIntent = Intent(requireActivity(), ContactsActivity::class.java)
+            startActivity(smsIntent)
+        }
     }
 }
