@@ -65,10 +65,15 @@ class ContactsActivity : BaseActivity(), View.OnClickListener,OnItemClickListene
     }
 
     private fun initData() {
-        val contactsLst = ContactsUtility.getInstance(this).getContacts()
-        if (!contactsLst.isNullOrEmpty()) {
-            initAdapter(contactsLst)
-        }
+        showLoader()
+        ContactsUtility.getInstance(this).getContacts(object : ContactsUtility.OnContactsListener {
+            override fun onReceivedContacts(contactsLst: List<ContactsBean>) {
+                if (!contactsLst.isNullOrEmpty()) {
+                    dismissLoader()
+                    initAdapter(contactsLst as ArrayList<ContactsBean>)
+                }
+            }
+        })
     }
 
     private fun initAdapter(contactsLst: ArrayList<ContactsBean>) {
