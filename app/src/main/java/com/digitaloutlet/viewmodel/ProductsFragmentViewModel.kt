@@ -5,6 +5,10 @@ import com.digitaloutlet.db.entities.ProductsEntity
 import com.digitaloutlet.model.response.ParentCategory
 import com.digitaloutlet.model.response.ResProducts
 import com.digitaloutlet.repository.ProductsRepository
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsListener {
 
@@ -101,39 +105,49 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         return tempLst
     }
 
-    private fun getSubcategoryWiseLst(productsLst: ArrayList<ProductsEntity>): ArrayList<ProductsEntity> {
-        val subcatWiseLst = ArrayList<ProductsEntity>()
-        val tempLst = ArrayList<ProductsEntity>()
-        val mapSubCat = HashMap<Int, ProductsEntity>()
+    private fun getSubcategoryWiseProducts(productsLst: ArrayList<ProductsEntity>): ArrayList<ProductsEntity> {
+        val subcatWiseProductsLst = ArrayList<ProductsEntity>()
+        var unsavedProductsLst = ArrayList<ProductsEntity>()
 
-        val selectedLst = mProductsRepository.getProductsByParentCatId(mCurrentCategory?.id!!)
-        if (!selectedLst.isNullOrEmpty()) {
-            val mapSavedLst = HashMap<Int, ProductsEntity>()
-            for (i in 0 until selectedLst.size) {
-                selectedLst.get(i).isSelected = true
-                subcatWiseLst.add(selectedLst.get(i))
-                mapSavedLst.put(selectedLst.get(i).productId!!, selectedLst.get(i))
-            }
-
-            for (i in 0 until productsLst.size) {
-                if (mapSavedLst.get(productsLst.get(i).productId) == null) {
-                    tempLst.add(productsLst.get(i))
-                }
-            }
-            /*val iterator = mapRemovePos.entries.iterator()
-            while (iterator.hasNext()) {
-                val mapElement = iterator.next() as Map.Entry<Int, Int>
-                productsLst.removeAt(mapElement.value)
-            }*/
+        val savedProductsLst = mProductsRepository.getProductsByParentCatId(mCurrentCategory?.id!!)
+        if (!savedProductsLst.isNullOrEmpty()) {
+            subcatWiseProductsLst.addAll(savedProductsLst)
+            unsavedProductsLst.addAll(getUnsavedProducts(productsLst, getSavedProductsMap(savedProductsLst)))
         } else {
-            tempLst.addAll(productsLst)
+            unsavedProductsLst.addAll(productsLst)
         }
-        //tempLst.addAll(productsLst)
-        tempLst.sortWith(Comparator { o1, o2 -> o1.subCatName!!.compareTo(o2.subCatName!!)})
-        for (i in 0 until tempLst.size) {
-            if (i == 0 || (tempLst.size > 1 && !tempLst.get(i).subCatName.equals(tempLst.get(i-1).subCatName))) {
+
+        unsavedProductsLst.sortWith(Comparator { o1, o2 -> o1.subCatName!!.compareTo(o2.subCatName!!)})
+
+        subcatWiseProductsLst.addAll(addSubcatElement(unsavedProductsLst))
+        return subcatWiseProductsLst
+    }
+
+    private fun getSavedProductsMap(selectedLst: ArrayList<ProductsEntity>): HashMap<Int, ProductsEntity> {
+        val mapSavedLst = HashMap<Int, ProductsEntity>()
+        for (i in 0 until selectedLst.size) {
+            selectedLst.get(i).isSelected = true
+            mapSavedLst.put(selectedLst.get(i).productId!!, selectedLst.get(i))
+        }
+        return mapSavedLst
+    }
+
+    private fun getUnsavedProducts(productsLst: ArrayList<ProductsEntity>, savedProductsMap: HashMap<Int, ProductsEntity>): ArrayList<ProductsEntity> {
+        val tempLst = ArrayList<ProductsEntity>()
+        for (i in 0 until productsLst.size) {
+            if (savedProductsMap.get(productsLst.get(i).productId) == null) {
+                tempLst.add(productsLst.get(i))
+            }
+        }
+        return tempLst
+    }
+
+    private fun addSubcatElement(lst: ArrayList<ProductsEntity>): ArrayList<ProductsEntity> {
+        val mapSubCat = TreeMap<Int, ProductsEntity>()
+        for (i in 0 until lst.size) {
+            if (i == 0 || (lst.size > 1 && !lst.get(i).subCatName.equals(lst.get(i-1).subCatName))) {
                 val obj = ProductsEntity()
-                obj.subCatName = tempLst.get(i).subCatName
+                obj.subCatName = lst.get(i).subCatName
                 var pos = 0
                 if (i > 0) {
                     pos = i + 1
@@ -141,13 +155,17 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
                 mapSubCat.put(pos, obj)
             }
         }
-        val iterator = mapSubCat.entries.iterator()
+        val keys = ArrayList<Int>(mapSubCat.keys)
+        for (i in keys.size - 1 downTo 0) {
+            System.out.println(mapSubCat.get(keys[i]))
+            lst.add(keys.get(i), mapSubCat.get(keys[i]) as ProductsEntity)
+        }
+        /*val iterator = mapSubCat.entries.iterator()
         while (iterator.hasNext()) {
             val mapElement = iterator.next() as Map.Entry<Int, ProductsEntity>
-            tempLst.add(mapElement.key, mapElement.value)
-        }
-        subcatWiseLst.addAll(tempLst)
-        return subcatWiseLst
+            lst.add(mapElement.key, mapElement.value)
+        }*/
+        return lst
     }
 
     fun saveProductsInDB(parentCatName: String?, isSaveAsDraft: Boolean = true) {
@@ -164,7 +182,7 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
         if (response.status == 1) {
             if (!response.records.isNullOrEmpty()) {
                 mProductsLst.clear()
-                mProductsLst.addAll(getSubcategoryWiseLst(response.records!!))
+                mProductsLst.addAll(getSubcategoryWiseProducts(response.records!!))
                 mLvdProducts?.value = mProductsLst
             } else {
                 mLvdProducts?.value = null
