@@ -125,6 +125,8 @@ class ProductsFragmentViewModel : ViewModel(), ProductsRepository.OnProductsList
                 val mapElement = iterator.next() as Map.Entry<Int, Int>
                 productsLst.removeAt(mapElement.value)
             }*/
+        } else {
+            tempLst.addAll(productsLst)
         }
         //tempLst.addAll(productsLst)
         tempLst.sortWith(Comparator { o1, o2 -> o1.subCatName!!.compareTo(o2.subCatName!!)})

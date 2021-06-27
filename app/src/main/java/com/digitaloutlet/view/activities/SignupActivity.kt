@@ -197,7 +197,7 @@ class SignupActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_submit -> {
                 val merchantBean = getMerchantData()
                 if (validateMerchantData(merchantBean)) {
-                    //viewModel.saveMerchant(merchantBean)
+                    viewModel.saveMerchant(merchantBean)
                 }
             }
         }
