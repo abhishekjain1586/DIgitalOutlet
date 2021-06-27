@@ -65,22 +65,30 @@ class ContactsActivity : BaseActivity(), View.OnClickListener,OnItemClickListene
     }
 
     private fun initData() {
+        initAdapter(ArrayList())
         showLoader()
         ContactsUtility.getInstance(this).getContacts(object : ContactsUtility.OnContactsListener {
             override fun onReceivedContacts(contactsLst: List<ContactsBean>) {
+                dismissLoader()
                 if (!contactsLst.isNullOrEmpty()) {
-                    dismissLoader()
                     initAdapter(contactsLst as ArrayList<ContactsBean>)
+                } else {
+                    showToastMessage(getString(R.string.error_no_contacts))
                 }
             }
         })
     }
 
     private fun initAdapter(contactsLst: ArrayList<ContactsBean>) {
-        mAdapter = ContactsAdapter(this)
-        mAdapter?.setData(contactsLst)
-        mAdapter?.setItemClickListener(this)
-        mRvContacts.adapter = mAdapter
+        if (mAdapter == null) {
+            mAdapter = ContactsAdapter(this)
+            mAdapter?.setData(contactsLst)
+            mAdapter?.setItemClickListener(this)
+            mRvContacts.adapter = mAdapter
+        } else {
+            mAdapter?.setData(contactsLst)
+            mAdapter?.notifyDataSetChanged()
+        }
     }
 
     override fun onItemClick(position: Int, obj: ContactsBean, actionType: Int) {

@@ -148,7 +148,7 @@ class DashboardActivityViewModel : ViewModel(),
     }
 
     override fun onSuccessFailureFetchProductsByMsisdn(errMsg: String) {
-        mProductsOnMsisdnObserver?.value = false
+        mProductsOnMsisdnObserver?.value = true
     }
 
     override fun onFailureFetchProductsByMsisdn(errMsg: String) {
